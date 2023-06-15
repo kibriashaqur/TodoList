@@ -110,6 +110,39 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                           decoration: BoxDecoration(
                             
                           ),
+                          child: Text(
+                            "Submit",
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Material(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.red[400],
+                      child: InkWell(
+                        onTap: (){},
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          height: 55,
+                          width: 120,
+                          decoration: BoxDecoration(
+
+                          ),
+                          child: Text(
+                            "Clear",
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     )
