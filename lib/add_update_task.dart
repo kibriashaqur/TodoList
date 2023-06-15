@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'dbHelper.dart';
+import 'home_screen.dart';
 import 'list.dart';
 
 class AddUpdateTask extends StatefulWidget {
+  int? todoId;
+  String? todoTitle;
+  String? todoDescription;
+  String? todoDNT;
+  bool? updates;
+
+  AddUpdateTask(
+      {this.todoId,
+      this.todoTitle,
+      this.todoDescription,
+      this.todoDNT,
+      this.updates});
   @override
   State<AddUpdateTask> createState() => _AddUpdateTaskState();
 }
@@ -90,7 +104,9 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                   ],
                 ),
               ),
-              SizedBox(height: 40,),
+              SizedBox(
+                height: 40,
+              ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Row(
@@ -100,16 +116,31 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.blue[400],
                       child: InkWell(
-                        onTap: (){},
+                        onTap: () {
+                          if(_fromKey.currentState!.validate()){
+                            dbHelper!.insert(TodoList(
+                                title: titleController.text,
+                                description: descriptionController.text,
+                                dateandtime: DateFormat('yMd')
+                                    .add_jm()
+                                    .format(DateTime.now())
+                                    .toString()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()));
+                            titleController.clear();
+                            descriptionController.clear();
+                            print("data added");
+                          }
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           margin: EdgeInsets.symmetric(horizontal: 20),
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           height: 55,
                           width: 120,
-                          decoration: BoxDecoration(
-                            
-                          ),
+                          decoration: BoxDecoration(),
                           child: Text(
                             "Submit",
                             style: TextStyle(
@@ -125,16 +156,19 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.red[400],
                       child: InkWell(
-                        onTap: (){},
+                        onTap: () {
+                          setState(() {
+                            titleController.clear();
+                            descriptionController.clear();
+                          });
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           margin: EdgeInsets.symmetric(horizontal: 20),
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           height: 55,
                           width: 120,
-                          decoration: BoxDecoration(
-
-                          ),
+                          decoration: BoxDecoration(),
                           child: Text(
                             "Clear",
                             style: TextStyle(
