@@ -13,10 +13,11 @@ class AddUpdateTask extends StatefulWidget {
 
   AddUpdateTask(
       {this.todoId,
-      this.todoTitle,
-      this.todoDescription,
-      this.todoDNT,
-      this.updates});
+        this.todoTitle,
+        this.todoDescription,
+        this.todoDNT,
+        this.updates});
+
   @override
   State<AddUpdateTask> createState() => _AddUpdateTaskState();
 }
@@ -40,15 +41,23 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
 
   @override
   Widget build(BuildContext context) {
-    final titleController = TextEditingController();
-    final descriptionController = TextEditingController();
+    final titleController = TextEditingController(text: widget.todoTitle);
+    final descriptionController = TextEditingController(text: widget.todoDescription);
+    String appTitle;
+    if (widget.updates == true) {
+      appTitle = "Update Task";
+    } else {
+      appTitle = "Add task";
+    }
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "ADD / UPDATE",
+          appTitle,
           style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
             letterSpacing: 1,
           ),
         ),
@@ -104,27 +113,35 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 40,
-              ),
+              SizedBox(height: 40),
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Material(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.blue[400],
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(15),
                       child: InkWell(
                         onTap: () {
-                          if(_fromKey.currentState!.validate()){
-                            dbHelper!.insert(TodoList(
+                          if (_fromKey.currentState!.validate()) {
+                            if(widget.updates == true){
+                              dbHelper!.update(TodoList(
+                                id: widget.todoId,
                                 title: titleController.text,
                                 description: descriptionController.text,
-                                dateandtime: DateFormat('yMd')
-                                    .add_jm()
-                                    .format(DateTime.now())
-                                    .toString()));
+                                dateandtime: widget.todoDNT,
+                              ));
+                            }else{
+                              dbHelper!.insert(TodoList(
+                                  title: titleController.text,
+                                  description: descriptionController.text,
+                                  dateandtime: DateFormat('yMd')
+                                      .add_jm()
+                                      .format(DateTime.now())
+                                      .toString()));
+                            }
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -153,8 +170,8 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                       ),
                     ),
                     Material(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.red[400],
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(15),
                       child: InkWell(
                         onTap: () {
                           setState(() {
@@ -173,7 +190,7 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                             "Clear",
                             style: TextStyle(
                               fontSize: 22,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w400,
                               color: Colors.white,
                             ),
                           ),
@@ -182,7 +199,7 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                     )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -190,3 +207,4 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
     );
   }
 }
+
